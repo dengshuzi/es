@@ -210,3 +210,79 @@ GET test_query/_search
   "size": 2
 }
 ```
+
+# 分组查询
+```json
+GET test_query/_search
+{
+  // 聚合规则
+  "aggs": {
+    "ageGroup": {
+      "terms": {
+        "field": "age"
+      }
+    }
+  },
+  // 去掉原数据,
+  "size": 0
+}
+```
+
+# 分组后聚合(求和)
+```json
+GET test_query/_search
+{
+  "aggs": {
+    "ageGroup": {
+      "terms": {
+        "field": "age"
+      },
+      "aggs": {
+        "ageSum": {
+          "sum": {
+            "field": "age"
+          }
+        }
+      }      
+    }
+  },
+  "size": 0
+}
+```
+
+# 求平均值
+```json
+GET test_query/_search
+{
+  "aggs": {
+    "avgAge": {
+      "avg": {
+        "field": "age"
+      }
+    }
+  },
+  "size": 0
+}
+```
+
+# 获取前几名操作
+```json
+GET test_query/_search
+{
+  "aggs": {
+    "top3": {
+      "top_hits": {
+        "sort": [
+          {
+            "age": {
+              "order": "desc"
+            }
+          }
+        ], 
+        "size": 3
+      }
+    }
+  },
+  "size": 0
+}
+```
